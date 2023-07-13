@@ -28,3 +28,4 @@ for line in range(max_height):
     draw_square_line(max_height)
     print(" ",end="")
     print()
+#pull deneme
