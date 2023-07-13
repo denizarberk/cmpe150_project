@@ -1,30 +1,18 @@
 def draw_square_line(square_size):
-    for j in range(square_size):
-        print("*", end="")
+        print("*"*square_size, end="")
 
 def draw_triangle_line(triangle_size,i):
-    for j in range(1,triangle_size - i):
-        print(" ", end="")
-    for o in range(i * 2 + 1):
-        print("*", end="")
-    for j in range(1,triangle_size - i):
-        print(" ", end="")
+    print(" " * (triangle_size - i - 1) + "*" * (2 * i + 1)+ " " * (triangle_size - i - 1),end="")
+
 
 def draw_inverted_triangle_line(inverted_triangle_size,i):
-    for j in range(i):
-        print(" ", end="")
-    for o in range((inverted_triangle_size - i) * 2 - 1):
-        print("*", end="")
-    for j in range(i):
-        print(" ", end="")
+    print(" " * i + "*" * (2 * (inverted_triangle_size - i ) - 1)+" " * i ,end="")
 
 def draw_rectangle_line(width):
-    for j in range(width):
-        print("*", end="")
+    print("*"*width, end="")
 
 def draw_empty_rectangle_line(width):
-    for j in range(width):
-        print(" ", end="")
+    print(" "*width, end="")
 
 max_height=6
 
