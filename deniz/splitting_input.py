@@ -2,7 +2,7 @@ input_text=input()
 row_list= input_text.split(",N")
 
 if "" in row_list:  #art arda iki tane "N" olduğunda bu gerekli oluyor"
-    row_list.remove("")
+    row_list.remove("") #eğer art arda üç tane "N" gelirse diğerini silmiyor
 
 row_number=len(row_list)
 print(row_list)
