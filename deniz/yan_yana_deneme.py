@@ -14,6 +14,7 @@ def draw_rectangle_line(width):
 def draw_empty_rectangle_line(width):
     print(" "*width, end="")
 
+
 max_height=6
 
 for line in range(max_height):
