@@ -7,18 +7,12 @@ if "" in row_list:  #art arda iki tane "N" olduğunda bu gerekli oluyor"
 row_number=len(row_list)
 print(row_list)
 
-row_1= row_list[0].split(",")
-if "" in row_1:
-    row_1.remove("")
-print(row_1)
+row_dictionary={}
 
+for i in range(row_number):
+    new_row=row_list[i].split(",")
+    if "" in new_row:    ##art arda gelen iki N den dolayı artan , işimi uzattı daha düzgün bir çözüm bulmaya çalışacağım
+        new_row.remove("")
+    row_dictionary.update({i+1: new_row})
 
-row_2=row_list[1].split(",")
-if "" in row_2:
-    row_2.remove("")
-print(row_2)
-
-
-#art arda gelen iki N den dolayı artan , işimi uzattı daha düzgün bir çözüm bulmaya çalışacağım
-
-#bir de kaç tane row olacağını bilmiyorum böyle tek tek yapmadan bi dictionary ye atmanın yolunu bulmalıyım
+print("dictionary:",row_dictionary)
