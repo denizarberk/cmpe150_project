@@ -30,3 +30,5 @@ for line in range(max_height):
     print(" ",end="")
     print()
 #pull deneme
+
+#yorumum
