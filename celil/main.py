@@ -1,8 +1,7 @@
 
-input_text = input()
+#input_text = input()
 
 # DO_NOT_EDIT_ANYTHING_ABOVE_THIS_LINE
-
 
 def square_line_drawer(size, line, height_offset):
     if line <= height_offset:
@@ -107,11 +106,17 @@ def max_height_finder(string_lst):
             max_height = obj_height_finder(shapes)
     return max_height
 
-def width_finder(string_lst): # "DL", "N", ve "B" temizlenmiş bir liste gerekli input olarak
+def width_finder(string_lst): # Hatalı
     total_width = 0
     lst = list(string_lst.split(","))
     for i in range(len(lst) - 1): # width coming from the space btw any two elements
         total_width += 1
+    for i in range(lst.count("DL")): # Overcountingi engellemek için yazdım ama çalışmıyor
+        total_width -= 1
+    for i in range(lst.count("N")):
+        total_width -= 1
+    for i in range(lst.count("B")):
+        total_width -= 1
     for shape in lst: # width coming from the elements' own widths
         if shape[0] == "E" or shape[0] == "R":
             width = obj_width_finder(shape)
@@ -127,7 +132,7 @@ def width_finder(string_lst): # "DL", "N", ve "B" temizlenmiş bir liste gerekli
             total_width += width
     return total_width
 
-def max_width_finder():
+def max_width_finder(): # Yanlış çalışıyor DL nin temizlenmiş hali gelmediği için
     max_width = 0
     for i in my_diction.values(): # my_dict.. liste gibi bir şey ama tam değil onun elemanları string, widthlerini bul ekle
         if width_finder(i) > max_width:
@@ -153,6 +158,8 @@ def empty_line_finder(max_height, obj_height):
     empty_line = max_height - obj_height
     return empty_line
 
+
+input_text = "T4,S4,DL,DL,T5,N,E1x4,R3x5,E1x7,T3,E1x4,N,B,N,DL,V3,V15,T7,S3,R5x2"
 my_list = input_text.split(",N,")
 
 my_diction = {}
