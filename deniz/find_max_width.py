@@ -1,47 +1,52 @@
-
 input_text=input()
 row_list= input_text.split(",N")
-
 for _ in range(row_list.count("")):
     row_list.remove("")
 
-row_number=len(row_list)
-print(row_list)
+number_of_rows=len(row_list)
 
 row_dictionary={}
 
-for i in range(row_number):
+for i in range(number_of_rows):
     new_row=row_list[i].split(",")
-    if "" in new_row:    ##art arda gelen iki N den dolayı artan , işimi uzattı daha düzgün bir çözüm bulmaya çalışacağım
+    print(new_row)
+    for _ in range(new_row.count("")):  ##art arda gelen iki N den dolayı artan , işimi uzattı daha düzgün bir çözüm bulmaya çalışacağım
         new_row.remove("")
+    print(row_list)
     row_dictionary.update({i+1: new_row})
 
 print("dictionary:",row_dictionary)
 
-#DL ve B yi sildikten sonra yapmalıyım bu hesabı yoksa eleman sayısının bir eksiğini ekle dediğimde onları da ekliyorum
-def find_row_width(k, row):
-    width = len(row) - 1  # her iki şekil arasındaki boşluk sayısı
+#offset(O1,02..) girdisini tam anlamadığım için hata olabilir, onun dışında hata yok fonksiyonda
+def find_row_width(row):
+    width = len(row) - 1
+    if "Dl" or "B" in row:  #DL ve B genişliğe ekleyor ama üstte onları da şekiller arasındaki boğluk olarak saydığımdan burada o fazladan saymayı çıkartıyorum
+        dashed_line_count= row.count("DL")
+        blank_count= row.count("B")
+        width=width-dashed_line_count-blank_count
     for k in range(len(row)):
         letter = str(row[k][0])
-        if letter == "T" or letter == "V" or letter == "S" or letter == "O":
+        if letter == "V" or letter == "S" or letter == "O":
             width = width + int(row[k][1])
+        elif letter=="T":
+            width=width+ (int(row[k][1])*2)-1
         elif letter == "R" or letter == "E":
             width = width + int(row[k][3])
         else:
             continue
-    print("row length of", k, "is", width)
+    return width
 
-for _ in range(row_number):
-    row= row_dictionary[_+1]
-   #print(row)
-    for k in range(len(row)):
-        print(find_row_width(k,row))
+def find_max_width():
+    row_number = len(row_list)
+    max_width=0
+    for j in range(row_number):
+        row = row_dictionary[j + 1]
+        row_width= find_row_width(row)
+        if row_width>max_width:
+            max_width=row_width
+    return max_width
 
-    # Hello comment line deneme
-    print("deneme")
-
-    #deniz push deneme
-
+print(find_max_width())
 
 
 
