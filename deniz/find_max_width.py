@@ -34,6 +34,8 @@ def find_row_width(row):
             width = width + int(row[k][3])
         else:
             continue
+        print(width)
+    print("--")
     return width
 
 def find_max_width():
