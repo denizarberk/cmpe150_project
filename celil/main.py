@@ -3,109 +3,138 @@
 
 # DO_NOT_EDIT_ANYTHING_ABOVE_THIS_LINE
 
-def size_finder(string):  # "DL", "N" veya "B" alırsa -1 dönecek
+def square_line_drawer(size, line, height_offset):
+    if line <= height_offset:
+        print(" " * size, end= " ")
+    else:
+        print("*" * size, end= " ")
+
+def triange_line_drawer(height, line, height_offset):
+    width = height * 2 - 1
+    if line <= height_offset:
+        print(" " * width, end= " ")
+    else:
+        line = line - height_offset
+        print(" " * (height - line) + "*" * ((line * 2) - 1) + " " * (height - line), end= " ")
+
+def inverted_triangle_line_drawer(width, line, height_offset): # Cracked, fix it
+    height = int((width + 1) / 2) # for V9, height = 5
+    if line > height - height_offset: # line 1,2,3,4,5,6,7 diyelim height offset = 2
+        print(" " * width, end = " ")
+    else:
+        print(" " * (line - 1) + "*" * ((width + 2) - (2 * line)) + " " * (line - 1), end = " ")
+
+def rectangle_line_drawer(height, width, line, height_offset):
+    if line <= height_offset:
+        print(" " * width, end = " ")
+    else:
+        line = line - height_offset
+        print("*" * width, end = " ")
+
+def empty_rec_line_drawer(height, width, line, height_offset):
+    if line <= height_offset:
+        print(" " * width, end = " ")
+    else:
+        line = line - height_offset
+        print(" " * width, end = " ")
+
+def obj_width_finder(string):  # "DL", "N" veya "B" alırsa -1 dönecek
     starting_letter = string[0]
     if starting_letter == "T":
         size = int(string[1: len(string)])
-        return size # Height
+        width = (size * 2) - 1
+        return width # Width
     if starting_letter == "V":
         size = int(string[1: len(string)])
         return size # Width
     if starting_letter == "S":
         size = int(string[1: len(string)])
-        return size # Both height and width, they are equal
+        return size # Width
     if starting_letter == "E":
         x_index = string.index("x")
-        height = int(string[1: x_index])
         width = int(string[(x_index + 1): len(string)])
-        return height, width
+        return width
     if starting_letter == "R":
         x_index = string.index("x")
-        height = int(string[1: x_index])
         width = int(string[(x_index + 1): len(string)])
-        return height, width
+        return width
     else:
         return -1
 
-def square_drawer(size):
-    for i in range(size):
-        for j in range(size):
-            print("*", end = "")
-        print()
-
-def triangle_drawer(height):
-    star_counter = 1
-    blank_counter = height - 1
-    for i in range(height):
-        print(" " * blank_counter + "*" * star_counter + " " * blank_counter)
-        star_counter += 2
-        blank_counter -= 1
-
-def inverted_triangle_drawer(width):
-    height = int((width + 1) / 2)
-    star_counter = (height * 2) - 1
-    blank_counter = 0
-    for i in range(height):
-        print(" " * blank_counter + "*" * star_counter + " " * blank_counter)
-        star_counter -= 2
-        blank_counter += 1
-
-def rectangle_drawer(height, width):
-    for i in range(height):
-        print("*" * width)
-
-def empty_rectengular_area(height, width):
-    for i in range(height):
-        print(" " * width)
-
-def next_row():
-    print()
+def obj_height_finder(string):
+    starting_letter = string[0]
+    if starting_letter == "T":
+        size = int(string[1: len(string)])
+        return size  # Height
+    if starting_letter == "V":
+        size = int(string[1: len(string)])
+        height = int((size + 1) / 2)
+        return height  # Height
+    if starting_letter == "S":
+        size = int(string[1: len(string)])
+        return size  # Height
+    if starting_letter == "E":
+        x_index = string.index("x")
+        height = int(string[1: x_index])
+        return height
+    if starting_letter == "R":
+        x_index = string.index("x")
+        height = int(string[1: x_index])
+        return height
+    else:
+        return -1
 
 def dashed_line_drawer(max_width):
     print("-" * max_width)
 
-def height_finder(string_lst):
+def max_height_finder(string_lst):
     lst = list(string_lst.split(","))
-    height = 0
+    max_height = 0
     for shapes in lst:
-        if shapes[0] == "T" and size_finder(shapes) > height:
-            height = size_finder(shapes)
+        if shapes[0] == "T" and obj_height_finder(shapes) > max_height:
+            max_height = obj_height_finder(shapes)
         if shapes[0] == "V":
-            shape_width = size_finder(shapes)
+            shape_width = obj_width_finder(shapes)
             shape_height = int((shape_width + 1) /2)
-            if shape_height > height:
-                height = shape_height
-        if shapes[0] == "S" and size_finder(shapes) > height:
-            height = size_finder(shapes)
-        if shapes[0] == "E" and size_finder(shapes)[0] > height:
-            height = size_finder(shapes)[0]
-        if shapes[0] == "R" and size_finder(shapes)[0] > height:
-            height = size_finder(shapes)[0]
-    print(height)
+            if shape_height > max_height:
+                max_height = shape_height
+        if shapes[0] == "S" and obj_height_finder(shapes) > max_height:
+            max_height = obj_height_finder(shapes)
+        if shapes[0] == "E" and obj_height_finder(shapes) > max_height:
+            max_height = obj_height_finder(shapes)
+        if shapes[0] == "R" and obj_height_finder(shapes)> max_height:
+            max_height = obj_height_finder(shapes)
+    return max_height
 
-def width_finder(string_lst): # "DL", "N", ve "B" temizlenmiş bir liste gerekli input olarak
+def width_finder(string_lst): # Hatalı
     total_width = 0
     lst = list(string_lst.split(","))
     for i in range(len(lst) - 1): # width coming from the space btw any two elements
         total_width += 1
-    for i in lst: # width coming from the elements' widths
-        if i[0] == "E" or i[0] == "R":
-            width = size_finder(i)[1]
+    for i in range(lst.count("DL")): # Overcountingi engellemek için yazdım ama çalışmıyor
+        total_width -= 1
+    for i in range(lst.count("N")):
+        total_width -= 1
+    for i in range(lst.count("B")):
+        total_width -= 1
+    for shape in lst: # width coming from the elements' own widths
+        if shape[0] == "E" or shape[0] == "R":
+            width = obj_width_finder(shape)
             total_width += width
 
-        if i[0] == "V" or i[0] == "S":
-            width = size_finder(i)
+        if shape[0] == "V" or shape[0] == "S":
+            width = obj_width_finder(shape)
             total_width += width
 
-        if i[0] == "T":
-            height = size_finder(i)
+        if shape[0] == "T":
+            height = obj_height_finder(shape)
             width = int((2 * height) - 1)
             total_width += width
     return total_width
 
-def max_width_finder():
+def max_width_finder(): # Yanlış çalışıyor DL nin temizlenmiş hali gelmediği için
     max_width = 0
-    for i in my_diction.values():
+    for i in my_diction.values(): # my_dict.. liste gibi bir şey ama tam değil onun elemanları string, widthlerini bul ekle
         if width_finder(i) > max_width:
             max_width = width_finder(i)
     return max_width
@@ -113,26 +142,33 @@ def max_width_finder():
 def shape_drawer(string):
     starting_letter = string[0]
     if starting_letter == "T":
-        triangle_drawer(size_finder(string))
+        triange_line_drawer(obj_height_finder(string), line, height_offset)
     if starting_letter == "V":
-        inverted_triangle_drawer(size_finder(string))
+        inverted_triangle_line_drawer(obj_width_finder(string), line, height_offset)
     if starting_letter == "S":
-        square_drawer(size_finder(string))
+        square_line_drawer(obj_height_finder(string), line, height_offset)
     if starting_letter == "E":
-        empty_rectengular_area(size_finder(string)[0],size_finder(string)[1])
+        empty_rec_line_drawer(obj_height_finder(string),obj_width_finder(string), line, height_offset)
     if starting_letter == "R":
-        rectangle_drawer(size_finder(string)[0],size_finder(string)[1])
+        rectangle_line_drawer(obj_height_finder(string),obj_width_finder(string), line, height_offset)
     if string == "B":
-        next_row()
+        print()
 
-input_text = "T4,S4,DL,DL,T5,N,E1x4,R3x5,E1x7,T3,E1x4"
+def empty_line_finder(max_height, obj_height):
+    empty_line = max_height - obj_height
+    return empty_line
+
+
+input_text = "T4,S4,DL,DL,T5,N,E1x4,R3x5,E1x7,T3,E1x4,N,B,N,DL,V3,V15,T7,S3,R5x2"
 my_list = input_text.split(",N,")
 
 my_diction = {}
 for i in range(1, len(my_list) + 1):
     my_diction["element_list_string{}".format(i)] = my_list[i - 1]
 
-print(my_diction)
+rows_max_height_list = []
+for values_str in my_diction.values():
+    rows_max_height_list.append(max_height_finder(values_str))
 
 for values_str in my_diction.values():
     values_lst = values_str.split(",")
@@ -147,8 +183,22 @@ for values_str in my_diction.values():
         for i in range(n_counter):
             values_lst.remove("N")
 
-    for value in values_lst:
-        shape_drawer(value)
+    max_height = max_height_finder(values_str)
+    if max_height == 0: # Max_height = 0 demek sadece "B" var demek kaç taneyse print() bas
+        b_counter = values_lst.count("B") # Burada bir sıkıntı seziyorum sanki dönmek lazım dkdkkd
+        for i in range(b_counter):
+            print()
+    max_width = max_width_finder()
+    row_s_width = width_finder(values_str)
+    width_offset = int((max_width - row_s_width) / 2)
+    row_s_height = max_height_finder(values_str)
+
+    for line in range(1, max_height + 1):
+        print(" " * width_offset, end= "")
+        for value in values_lst:
+            height_offset = row_s_height - obj_height_finder(value)
+            shape_drawer(value)
+        print()
 
 
 print("-" * max_width_finder())
