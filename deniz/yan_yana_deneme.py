@@ -4,7 +4,6 @@ def draw_square_line(square_size):
 def draw_triangle_line(triangle_size,i):
     print(" " * (triangle_size - i - 1) + "*" * (2 * i + 1)+ " " * (triangle_size - i - 1),end="")
 
-
 def draw_inverted_triangle_line(inverted_triangle_size,i):
     print(" " * i + "*" * (2 * (inverted_triangle_size - i ) - 1)+" " * i ,end="")
 

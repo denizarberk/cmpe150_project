@@ -1,8 +1,8 @@
 input_text=input()
 row_list= input_text.split(",N")
 
-if "" in row_list:  #art arda iki tane "N" olduğunda bu gerekli oluyor"
-    row_list.remove("") #eğer art arda üç tane "N" gelirse diğerini silmiyor
+for _ in range(row_list.count("")):
+    row_list.remove("")
 
 row_number=len(row_list)
 print(row_list)
@@ -17,11 +17,11 @@ for i in range(row_number):
 
 print("dictionary:",row_dictionary)
 
-def draw_triangle_line(triangle_size,i):
-    print(" " * (triangle_size - i - 1) + "*" * (2 * i + 1)+ " " * (triangle_size - i - 1),end="")
+def draw_triangle_line(height,i):
+    print(" " * (height - i - 1) + "*" * (2 * i + 1)+ " " * (height - i - 1),end="")
 
-def draw_inverted_triangle_line(inverted_triangle_size, i):
-    print(" " * i + "*" * (2 * (inverted_triangle_size - i) - 1) + " " * i, end="")
+def draw_inverted_triangle_line(width, i):
+    print(" " * i + "*" * (width-(2*i)) + " " * i, end="")
 
 def draw_square_line(square_size):
     print("*" * square_size, end="")
