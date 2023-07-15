@@ -8,7 +8,7 @@ Muhtemelen 2 gün daha bakarsak biter gibime geliyor
 
 Bayağı bir şey halloldu aynen kısa sürede biter gibime geliyor.
 Senin o iki haneli olunca yaptığın çözümle beraber ben max_width fonksiyonunu doğru yapmıştım.
-Benimkini incele istersen, main_deniz de aynı isimli bir fonksiyon olarak tanımlanmış.
+Benimkini incele istersen, main_deniz de find_row_width fonksiyonu olarak tanımlanmış.
 Seninkinin nerede hata yaptığını ben de tam anlamadım bi de ikimiz programdaki ilk text i farklı şekilde çekmişiz
 Seninkini tam anlamadığımdan da yorum yapamıyorum.
 Her fonksiyonu çağırdığında yeniden split(",") çağırıp tekrardan elemanları buldurmanın özel bir sebebi mi var?
