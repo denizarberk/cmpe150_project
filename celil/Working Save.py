@@ -109,18 +109,18 @@ def max_height_finder(string_lst):
             max_height = obj_height_finder(shapes)
     return max_height
 
-def width_finder(string_lst):
+def width_finder(string_lst): # Hatalı
     total_width = 0
     lst = list(string_lst.split(","))
-    for i in range(len(lst) - 1): # Width coming from the space btw any two elements
+    for i in range(len(lst) - 1): # width coming from the space btw any two elements
         total_width += 1
-    for i in range(lst.count("DL")): # Avoid overcounting
+    for i in range(lst.count("DL")): # Overcountingi engellemek için yazdım ama çalışmıyor
         total_width -= 1
-    for i in range(lst.count("N")): # Avoid overcounting
+    for i in range(lst.count("N")):
         total_width -= 1
-    for i in range(lst.count("B")): # Avoid overcounting
+    for i in range(lst.count("B")):
         total_width -= 1
-    for shape in lst: # Width coming from the elements' own widths
+    for shape in lst: # width coming from the elements' own widths
         if shape[0] == "E" or shape[0] == "R":
             width = obj_width_finder(shape)
             total_width += width
@@ -137,12 +137,12 @@ def width_finder(string_lst):
 
 def max_width_finder():
     max_width = 0
-    for i in my_diction.values():
+    for i in my_diction.values(): # my_dict.. liste gibi bir şey ama tam değil onun elemanları string, widthlerini bul ekle
         if width_finder(i) > max_width:
             max_width = width_finder(i)
     return max_width
 
-def shape_drawer(string, line, height_offset, max_height):
+def shape_drawer(string):
     starting_letter = string[0]
     if starting_letter == "T":
         triange_line_drawer(obj_height_finder(string), line, height_offset)
@@ -163,52 +163,48 @@ def empty_line_finder(max_height, obj_height):
     empty_line = max_height - obj_height
     return empty_line
 
-def dictionary_setter():
-    # Firstly we convert input_txt into a list of strings
-    my_list = input_text.split(",N,")
+#input_text = "T4,DL,R2x3,DL,O2,N,N,O1,V5,O2,T3"
+my_list = input_text.split(",N,")
 
-    # At this stage we get a dict. of keys with strings like element_list_string1, ..2 and so on
-    # as many as the number of the rows
-    global my_diction
-    my_diction = {}
-    for i in range(1, len(my_list) + 1):
-        my_diction["element_list_string{}".format(i)] = my_list[i - 1]
+my_diction = {}
+for i in range(1, len(my_list) + 1):
+    my_diction["element_list_string{}".format(i)] = my_list[i - 1]
 
-def main():
-    for values_str in my_diction.values():
-        values_lst = values_str.split(",") # We want to use list methods such as "count()" and "remove()"
-        if "DL" in values_lst: # Delete all "DL"s in the rows, if any exist in a row call dashed_line_drawer
-            dashed_line_drawer(max_width_finder())
-            dl_counter = values_lst.count("DL")
-            for i in range(dl_counter):
-                values_lst.remove("DL")
-        if "N" in values_lst: # Delete all "N"s in the rows
-            n_counter = values_lst.count("N")
-            for i in range(n_counter):
-                values_lst.remove("N")
-        max_height = max_height_finder(values_str)
-        if max_height == 0: # Max_height becomes 0 iff the row solely has the word "B", print blank line as many as "B"s
-            b_counter = values_lst.count("B")
-            for i in range(b_counter):
-                print()
+rows_max_height_list = []
+for values_str in my_diction.values():
+    rows_max_height_list.append(max_height_finder(values_str))
 
-        max_width = max_width_finder() # Checks all the rows and sorts their widths, returns the biggest
-        row_s_width = width_finder(values_str)
-        width_offset = int((max_width - row_s_width) / 2) # For any row finds the initial spacing
-        row_s_height = max_height_finder(values_str) # max_height_finder works for only the row, not for all the rows
+for values_str in my_diction.values():
+    values_lst = values_str.split(",")
 
-        for line in range(1, max_height + 1):
-            print(" " * width_offset, end= "")
-            for value in values_lst:
-                height_offset = row_s_height - obj_height_finder(value)
-                shape_drawer(value, line, height_offset, max_height)
+    if "DL" in values_lst:
+        dashed_line_drawer(max_width_finder())
+        dl_counter = values_lst.count("DL")
+        for i in range(dl_counter):
+            values_lst.remove("DL")
+    if "N" in values_lst:
+        n_counter = values_lst.count("N")
+        for i in range(n_counter):
+            values_lst.remove("N")
+    max_height = max_height_finder(values_str)
+    if max_height == 0: # Max_height = 0 demek sadece "B" var demek kaç taneyse print() bas
+        b_counter = values_lst.count("B") # Burada bir sıkıntı seziyorum sanki dönmek lazım dkdkkd
+        for i in range(b_counter):
             print()
+    max_width = max_width_finder()
+    row_s_width = width_finder(values_str)
+    width_offset = int((max_width - row_s_width) / 2)
+    row_s_height = max_height_finder(values_str)
 
-    print("-" * max_width_finder())
+    for line in range(1, max_height + 1):
+        print(" " * width_offset, end= "")
+        for value in values_lst:
+            height_offset = row_s_height - obj_height_finder(value)
+            shape_drawer(value)
+        print()
 
-dictionary_setter()
-main()
 
+print("-" * max_width_finder())
 
 
 # DO_NOT_EDIT_ANYTHING_BELOW_THIS_LINE
