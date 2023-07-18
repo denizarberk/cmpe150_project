@@ -4,108 +4,182 @@
 input_text = input()
 
 # DO_NOT_EDIT_ANYTHING_ABOVE_THIS_LINE
-    #BU KISIMDA INPUTU ALIP ÖNCE ELEMANLARI ROWLAR OLAN BİR LİSTEYE ATADIM
-row_list= input_text.split(",N")
-for _ in range(row_list.count("")):
-    row_list.remove("")
-
-    #BU KISIMDA O LİSTEYİ DEĞİŞTİRİP ELEMANLARI ROWLARIN LİSTESİ OLAN VE LİSTELERİN EMANLARI DA ÇİZMEMİZ GEREKEN KOMUTLAR OLAN "row_dictionary" YE ATADIM
-number_of_rows=len(row_list)
-row_dictionary={}
+temporary_list=input_text.split(",N,")
+number_of_rows=len(temporary_list)
+row_list=[]
 
 for i in range(number_of_rows):
-    new_row=row_list[i].split(",")
-    for _ in range(new_row.count("")):  ##art arda gelen iki N den dolayı artan , işimi uzattı daha düzgün bir çözüm bulmaya çalışacağım
-        new_row.remove("")
-    row_dictionary.update({i+1: new_row})
+    new_row=temporary_list[i].split(",")
+    for _ in range (new_row.count("N")):
+        new_row.remove("N")
+    if new_row!= []:
+        row_list.append(new_row)
 
-print("dictionary:",row_dictionary)
-
-    #BU KISIMDA find_row_width ve find_max_width FONKSİYONLARINI TANIMLADIM
-#offset(O1,02..) girdisini tam anlamadığım için hata olabilir, onun dışında hata yok fonksiyonda
-def find_row_width(row):
-    width = len(row) - 1
-    if "Dl" or "B" in row:  #DL ve B genişliğe ekleyor ama üstte onları da şekiller arasındaki boğluk olarak saydığımdan burada o fazladan saymayı çıkartıyorum
-        dashed_line_count= row.count("DL")
-        blank_count= row.count("B")
-        width=width-dashed_line_count-blank_count
+def count_then_erase_dashed_line(row):
     for k in range(len(row)):
         letter = str(row[k][0])
-        if letter == "V" or letter == "S" or letter == "O":
-            width = width + int(row[k][1: len(row[k])])
-        elif letter=="T":
-            width=width+ (int(row[k][1: len(row[k])])*2)-1
-        elif letter == "R" or letter == "E":
+        dashed_line_count=0
+        if letter == "D":
+            dashed_line_count=1
+            for _ in range(row.count("DL")):
+                row.remove("DL")
+            break
+    return dashed_line_count
+
+def find_row_width(row):
+    total_width = 0
+    offset_count = 0
+    for k in range(len(row)):
+        letter = str(row[k][0])
+        if letter == "T":
+            width = (int(row[k][1: len(row[k])]) * 2) - 1
+            total_width = width + total_width
+        elif letter == "V":
+            width = int(row[k][1: len(row[k])])
+            total_width = width + total_width
+        elif letter == "S":
+            size = int(row[k][1: len(row[k])])
+            total_width = size + total_width
+        elif letter == "R":
             x_index = row[k].index("x")
-            width = width + int(row[k][x_index+1: len(row[k])])
-        else:
+            width = int(row[k][x_index + 1: len(row[k])])
+            total_width = width + total_width
+        elif letter == "E":
+            x_index = row[k].index("x")
+            width = int(row[k][x_index + 1: len(row[k])])
+            total_width = width + total_width
+        elif letter == "B":
             continue
-    return width
+        elif letter == "O":
+            offset_count += 1
+    total_width = total_width + len(row) - 1
+    return total_width
 
 def find_max_width():
-    row_number = len(row_list)
-    max_width=0
-    for j in range(row_number):
-        row = row_dictionary[j + 1]
-        row_width= find_row_width(row)
-        if row_width>max_width:
-            max_width=row_width
+    for j in range(len(row_list)):
+        max_width=0
+        width=find_row_width(row_list[j]) #find_row_with tuple göndermişti
+        if width>max_width:
+            max_width=width+max_width
     return max_width
 
-print(find_max_width())
-
-    #BU KISIMDA ŞEKİL LİNE ÇİZME FONKSİYONLARINI TANIMLIYORUM
-def draw_triangle_line(height,i):
-    print(" " * (height - i - 1) + "*" * (2 * i + 1)+ " " * (height - i - 1),end="")
-
-def draw_inverted_triangle_line(width, i):
-    print(" " * i + "*" * (width-(2*i)) + " " * i, end="")
-
-def draw_square_line(square_size):
-    print("*" * square_size, end="")
-
-def draw_rectangle_line(height,width):
-    print("*"*width,end="")
-def draw_empty_rectangle_line(height,width):
-    print("*"*width,end="")
-
-def draw_dashed_line():
-    max_widh=find_max_width()
-    print("-"*max_widh)
-
-def blank_line():
-    print()
-
-
-def startswith(row):
+def find_max_height(row):
+    max_height = 0
+    offset_count = 0
     for k in range(len(row)):
         letter = str(row[k][0])
-        if letter=="T":
-            height=int(row[k][1: len(row[k])])
-            draw_triangle_line(height,i)
-        elif letter=="V":
-            width=int(row[k][1: len(row[k])])
-            draw_inverted_triangle_line(width,i)
-        elif letter=="S":
-            size=int(row[k][1: len(row[k])])
-            draw_square_line(size)
-        elif letter=="R":
-            x_index= row[k].index("x")
-            height=int(row[k][1: x_index])
-            width=int(row[k][x_index+1: len(row)])
-            draw_rectangle_line(height,width)
-        elif letter=="E":
-            x_index= row[k].index("x")
-            height=int(row[k][1: x_index])
-            width=int(row[k][x_index+1: len(row)])
-            draw_empty_rectangle_line(height,width)
-        elif letter=="D":
-            draw_dashed_line()
-        elif letter=="B":
-            blank_line()
-        elif letter=="O":
-            print("Offset")
+        if letter == "T":
+            height = int(row[k][1: len(row[k])])  # triangle fonksiyonu ilk elemanı width, ikincisi height olan bir tuple gönderdi
+            if height > max_height:
+                max_height = height
+        elif letter == "V":
+            height = int((int(row[k][1: len(row[k])]) + 1) / 2)
+            if height > max_height:
+                max_height = height
+        elif letter == "S":
+            height = int(row[k][1: len(row[k])])
+            if height > max_height:
+                max_height = height
+        elif letter == "R":
+            x_index = row[k].index("x")
+            height = int(row[k][1: x_index])
+            if height > max_height:
+                max_height = height
+        elif letter == "E":
+            x_index = row[k].index("x")
+            height = int(row[k][1: x_index])
+            if height > max_height:
+                max_height = height
+        elif letter == "B":
+            max_height=-1
+        elif letter == "O":
+            offset_count += 1
+    return max_height
 
-#şekilleri çizmeye daha başlamadım
+
+def draw_dashed_line(max_height):
+    print("-"*max_height)
+
+def draw_blank_line():
+    print("blank")
+
+def draw_square_line(row,k,max_height,i):
+    size = int(row[k][1: len(row[k])])
+    offset=max_height-size
+    if i<offset:
+        print(" "*(size+1),end="")
+    else:
+        print("*" *size+" ",end="")
+
+def draw_triangle_line(row,k,max_height, i):
+    height = int(row[k][1: len(row[k])])
+    width = (int(row[k][1: len(row[k])]) * 2) - 1
+    offset = max_height - height
+    if i < offset:
+        print(" " * (width+1), end="")
+    else:
+        print(" " * (height - (i-offset) - 1) + "*" * (2 * (i-offset) + 1) + " " * (height - (i-offset)), end="")
+
+def draw_inverted_triangle_line(row,k,max_height, i):
+    height = int((int(row[k][1: len(row[k])]) + 1) / 2)
+    width = int(row[k][1: len(row[k])])
+    if i<height:
+        print(" " * i + "*" * (width-2*i) + " " * (i+1), end="")
+    else:
+        print(" "*(width+1),end="")
+
+def draw_rectangle_line(row,k,max_height,i):
+    x_index = row[k].index("x")
+    height = int(row[k][1: x_index])
+    width = int(row[k][x_index + 1: len(row[k])])
+    offset=max_height-height
+    if i<offset:
+        print(" "*(width+1),end="")
+    else:
+        print("*" * width+" ",end="")
+
+def draw_empty_rectangle_line(row,k,max_height,i):
+    x_index = row[k].index("x")
+    height = int(row[k][1: x_index])
+    width = int(row[k][x_index + 1: len(row[k])])
+    offset = max_height - height
+    if i < offset:
+        print(" " * (width+1), end="")
+    else:
+        print(" " * (width+1), end="")
+print(row_list)
+for j in range(len(row_list)):
+    row=row_list[j]
+    max_width=find_max_width()
+    max_height=find_max_height(row)
+    row_width=find_row_width(row)
+    dashed_line_count=count_then_erase_dashed_line(row)
+    offset=int((max_width-row_width)/2)
+    if dashed_line_count >= 1:
+        print("-" * max_width)
+        dashed_line_count = 0
+    if max_height==-1:
+        print()
+    for i in range(max_height):
+        print(" " * offset, end="")
+        for k in range(len(row)):
+            letter = str(row[k][0])
+            if letter == "T":
+                draw_triangle_line(row,k,max_height,i)
+            elif letter == "V":
+                draw_inverted_triangle_line(row,k,max_height,i)
+            elif letter == "S":
+                draw_square_line(row,k,max_height,i)
+            elif letter == "R":
+                draw_rectangle_line(row,k,max_height,i)
+            elif letter == "E":
+                draw_empty_rectangle_line(row,k,max_height,i)
+            elif letter == "O":
+                print("offset")
+
+
+        print()
+
+print("-" * max_width)
 
 # DO_NOT_EDIT_ANYTHING_BELOW_THIS_LINE
