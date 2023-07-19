@@ -56,11 +56,11 @@ def find_row_width(row):
     return total_width
 
 def find_max_width():
+    max_width = 0
     for j in range(len(row_list)):
-        max_width=0
         width=find_row_width(row_list[j]) #find_row_with tuple göndermişti
         if width>max_width:
-            max_width=width+max_width
+            max_width=width
     return max_width
 
 def find_max_height(row):
