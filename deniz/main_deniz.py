@@ -101,7 +101,7 @@ def draw_dashed_line(max_height):
     print("-"*max_height)
 
 def draw_blank_line():
-    print("blank")
+    print()
 
 def draw_square_line(row,k,max_height,i):
     size = int(row[k][1: len(row[k])])
@@ -147,13 +147,13 @@ def draw_empty_rectangle_line(row,k,max_height,i):
         print(" " * (width+1), end="")
     else:
         print(" " * (width+1), end="")
-print(row_list)
+
 for j in range(len(row_list)):
     row=row_list[j]
+    dashed_line_count=count_then_erase_dashed_line(row)
     max_width=find_max_width()
     max_height=find_max_height(row)
     row_width=find_row_width(row)
-    dashed_line_count=count_then_erase_dashed_line(row)
     offset=int((max_width-row_width)/2)
     if dashed_line_count >= 1:
         print("-" * max_width)
