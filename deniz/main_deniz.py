@@ -9,7 +9,7 @@ for i in range(number_of_rows):
     new_row=temporary_list[i].split(",")
     for _ in range (new_row.count("N")):
         new_row.remove("N")
-    if new_row!= []:
+    if new_row != []:
         row_list.append(new_row)
 
 def count_then_erase_dashed_line(row):
@@ -26,7 +26,6 @@ def count_then_erase_dashed_line(row):
 
 def find_element_width(element):
     width=0
-    offset_count=0
     letter = str(element[0])
     if letter == "T":
         width = (int(element[1: len(element)]) * 2) - 1
@@ -43,7 +42,6 @@ def find_element_width(element):
     elif letter == "B":
         width=0
     elif letter == "O":
-        offset_count += 1
         width=int(element[1: len(element)])
     return width
 
@@ -60,8 +58,8 @@ def find_max_width():
         if width>max_width:
             max_width=width
     return max_width
+
 def find_element_height(element):
-    offset_count=0
     letter=str(element[0])
     if letter == "T":
         height = int(element[1: len(element)])
@@ -78,7 +76,6 @@ def find_element_height(element):
     elif letter == "B":
         height=0
     elif letter == "O":
-        offset_count += 1
         height=0
     return height
 
@@ -100,44 +97,40 @@ def draw_square_line(element,line):
     size=find_element_width(element)
     offset=max_height-size
     if line<offset:
-        print(" "*(size+1),end="")
+        print(" "*size,end="")
     else:
-        print("*" *size+" ",end="")
+        print("*" *size,end="")
 
 def draw_triangle_line(element,line):
     height = find_element_height(element)
     width = find_element_width(element)
     offset = max_height - height
     if line < offset:
-        print(" " * (width+1), end="")
+        print(" " * width, end="")
     else:
-        print(" " * (height - (line-offset) - 1) + "*" * (2 * (line-offset) + 1) + " " * (height - (line-offset)), end="")
+        print(" " * (height - (line-offset) - 1) + "*" * (2 * (line-offset) + 1) + " " * (height - (line-offset)-1), end="")
 
 def draw_inverted_triangle_line(element,line):
     height = find_element_height(element)
     width = find_element_width(element)
     if line<height:
-        print(" " * line + "*" * (width-2*line) + " " * (line+1), end="")
+        print(" " * line + "*" * (width-2*line) + " " * line, end="")
     else:
-        print(" "*(width+1),end="")
+        print(" "*width, end="")
 
 def draw_rectangle_line(element,line):
     height = find_element_height(element)
     width = find_element_width(element)
     offset=max_height-height
     if line<offset:
-        print(" "*(width+1),end="")
+        print(" "* width, end="")
     else:
-        print("*" * width+" ",end="")
+        print("*" * width, end="")
 
 def draw_empty_rectangle_line(element,line):
-    height = find_element_height(element)
     width = find_element_width(element)
-    offset = max_height - height
-    if line < offset:
-        print(" " * (width+1), end="")
-    else:
-        print(" " * (width+1), end="")
+    print(" " * width, end="")
+
 def draw_offset(element,line):
     width=find_element_width(element)
     print(" "*width,end="")
@@ -147,13 +140,13 @@ for row in row_list:
     max_width=find_max_width()
     max_height=find_max_height(row)
     row_width=find_row_width(row)
-    offset=int((max_width-row_width)/2)
+    row_offset=int((max_width-row_width)/2)
     if dashed_line_count >= 1:
         print("-" * max_width)
     if row_width==-1: #Blank line geldiğince row_width -1 olarak dönüyor
         print()
     for line in range(max_height):
-        print(" " * offset, end="")
+        print(" " * row_offset, end="")
         for element in row:
             letter = str(element[0])
             if letter == "T":
@@ -168,7 +161,7 @@ for row in row_list:
                 draw_empty_rectangle_line(element,line)
             elif letter == "O":
                 draw_offset(element,line)
-
+            print(" ",end="")
 
         print()
 
