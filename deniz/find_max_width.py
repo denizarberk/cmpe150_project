@@ -13,8 +13,8 @@ for i in range(number_of_rows):
         row_list.append(new_row)
 
 def count_then_erase_dashed_line(row):
-    for k in range(len(row)):
-        letter = str(row[k][0])
+    for element in row:
+        letter= str(element[0])
         dashed_line_count=0
         if letter == "D":
             dashed_line_count=1
@@ -49,15 +49,14 @@ def find_element_width(element):
 
 def find_row_width(row):
     total_width = len(row)-1
-    for k in range(len(row)):
-        element=row[k]
+    for element in row:
         total_width = find_element_width(element) + total_width
     return total_width
 
 def find_max_width():
     max_width = 0
-    for j in range(len(row_list)):
-        width=find_row_width(row_list[j]) #find_row_with tuple göndermişti
+    for row in row_list:
+        width=find_row_width(row)
         if width>max_width:
             max_width=width
     return max_width
@@ -65,7 +64,7 @@ def find_element_height(element):
     offset_count=0
     letter=str(element[0])
     if letter == "T":
-        height = int(element[1: len(element)])  # triangle fonksiyonu ilk elemanı width, ikincisi height olan bir tuple gönderdi
+        height = int(element[1: len(element)])
     elif letter == "V":
         height = int((int(element[1: len(element)]) + 1) / 2)
     elif letter == "S":
@@ -85,8 +84,7 @@ def find_element_height(element):
 
 def find_max_height(row):
     max_height = 0
-    for k in range(len(row)):
-        element=row[k]
+    for element in row:
         if find_element_height(element)>max_height:
             max_height=find_element_height(element)
     return max_height
@@ -144,8 +142,7 @@ def draw_offset(element,line):
     width=find_element_width(element)
     print(" "*width,end="")
 
-for j in range(len(row_list)):
-    row=row_list[j]
+for row in row_list:
     dashed_line_count=count_then_erase_dashed_line(row)
     max_width=find_max_width()
     max_height=find_max_height(row)
@@ -157,8 +154,7 @@ for j in range(len(row_list)):
         print()
     for line in range(max_height):
         print(" " * offset, end="")
-        for k in range(len(row)):
-            element=row[k]
+        for element in row:
             letter = str(element[0])
             if letter == "T":
                 draw_triangle_line(element,line)
