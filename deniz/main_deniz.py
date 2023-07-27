@@ -103,47 +103,47 @@ def draw_dashed_line(max_height):
 def draw_blank_line():
     print()
 
-def draw_square_line(row,k,max_height,i):
-    size = int(row[k][1: len(row[k])])
+def draw_square_line(element,max_height,line):
+    size = int(element[1: len(element)])
     offset=max_height-size
-    if i<offset:
+    if line<offset:
         print(" "*(size+1),end="")
     else:
         print("*" *size+" ",end="")
 
-def draw_triangle_line(row,k,max_height, i):
-    height = int(row[k][1: len(row[k])])
-    width = (int(row[k][1: len(row[k])]) * 2) - 1
+def draw_triangle_line(element,max_height,line):
+    height = int(element[1: len(element)])
+    width = (int(element[1: len(element)]) * 2) - 1
     offset = max_height - height
-    if i < offset:
+    if line < offset:
         print(" " * (width+1), end="")
     else:
-        print(" " * (height - (i-offset) - 1) + "*" * (2 * (i-offset) + 1) + " " * (height - (i-offset)), end="")
+        print(" " * (height - (line-offset) - 1) + "*" * (2 * (line-offset) + 1) + " " * (height - (line-offset)), end="")
 
-def draw_inverted_triangle_line(row,k,max_height, i):
-    height = int((int(row[k][1: len(row[k])]) + 1) / 2)
-    width = int(row[k][1: len(row[k])])
-    if i<height:
-        print(" " * i + "*" * (width-2*i) + " " * (i+1), end="")
+def draw_inverted_triangle_line(element,max_height, line):
+    height = int((int(element[1: len(element)]) + 1) / 2)
+    width = int(element[1: len(element)])
+    if line<height:
+        print(" " * line + "*" * (width-2*line) + " " * (line+1), end="")
     else:
         print(" "*(width+1),end="")
 
-def draw_rectangle_line(row,k,max_height,i):
-    x_index = row[k].index("x")
-    height = int(row[k][1: x_index])
-    width = int(row[k][x_index + 1: len(row[k])])
+def draw_rectangle_line(element,max_height,line):
+    x_index = element.index("x")
+    height = int(element[1: x_index])
+    width = int(element[x_index + 1: len(element)])
     offset=max_height-height
-    if i<offset:
+    if line<offset:
         print(" "*(width+1),end="")
     else:
         print("*" * width+" ",end="")
 
-def draw_empty_rectangle_line(row,k,max_height,i):
-    x_index = row[k].index("x")
-    height = int(row[k][1: x_index])
-    width = int(row[k][x_index + 1: len(row[k])])
+def draw_empty_rectangle_line(element,max_height,line):
+    x_index = element.index("x")
+    height = int(element[1: x_index])
+    width = int(element[x_index + 1: len(element)])
     offset = max_height - height
-    if i < offset:
+    if line < offset:
         print(" " * (width+1), end="")
     else:
         print(" " * (width+1), end="")
@@ -160,20 +160,21 @@ for j in range(len(row_list)):
         dashed_line_count = 0
     if max_height==-1:
         print()
-    for i in range(max_height):
+    for line in range(max_height):
         print(" " * offset, end="")
         for k in range(len(row)):
-            letter = str(row[k][0])
+            element=row[k]
+            letter = str(element[0])
             if letter == "T":
-                draw_triangle_line(row,k,max_height,i)
+                draw_triangle_line(element,max_height,line)
             elif letter == "V":
-                draw_inverted_triangle_line(row,k,max_height,i)
+                draw_inverted_triangle_line(element,max_height,line)
             elif letter == "S":
-                draw_square_line(row,k,max_height,i)
+                draw_square_line(element,max_height,line)
             elif letter == "R":
-                draw_rectangle_line(row,k,max_height,i)
+                draw_rectangle_line(element,max_height,line)
             elif letter == "E":
-                draw_empty_rectangle_line(row,k,max_height,i)
+                draw_empty_rectangle_line(element,max_height,line)
             elif letter == "O":
                 print("offset")
 
