@@ -47,6 +47,8 @@ def find_element_width(element):
 
 def find_row_width(row):
     total_width = len(row)-1
+    if "DL" in row:
+        total_width-= row.count("DL")
     for element in row:
         total_width = find_element_width(element) + total_width
     return total_width
@@ -88,13 +90,13 @@ def find_max_height(row):
 
 
 def draw_dashed_line():
-    print("-"*max_height)
+    print("-"*max_width)
 
 def draw_blank_line():
     print()
 
 def draw_square_line(element,line):
-    size=find_element_width(element)
+    size=find_element_height(element)
     offset=max_height-size
     if line<offset:
         print(" "*size,end="")
@@ -142,9 +144,9 @@ for row in row_list:
     row_width=find_row_width(row)
     row_offset=int((max_width-row_width)/2)
     if dashed_line_count >= 1:
-        print("-" * max_width)
-    if row_width==-1: #Blank line geldiğince row_width -1 olarak dönüyor
-        print()
+        draw_dashed_line()
+    if row_width==0: #Blank line geldiğince row_width 0 olarak dönüyor
+        draw_blank_line()
     for line in range(max_height):
         print(" " * row_offset, end="")
         for element in row:

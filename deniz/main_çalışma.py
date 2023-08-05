@@ -1,22 +1,18 @@
 input_text = input()
 
 # DO_NOT_EDIT_ANYTHING_ABOVE_THIS_LINE
-    #bu kısımda verilen inputu N gördüğüm yerden ayırıp temporary_list adında listeye atıyorum
 temporary_list=input_text.split(",N,")
-number_of_rows=len(temporary_list) #kaç tane row olduğunun sayısı olmuş oluyor N gördüğüm yerden ayırdığım için
+number_of_rows=len(temporary_list)
 row_list=[]
-    #burada her row u , görüğüm yerden ayrıp new_row listesine atıyorum
+
 for i in range(number_of_rows):
     new_row=temporary_list[i].split(",")
-    for _ in range (new_row.count("N")): #art arda N geldiği zaman sorun oluyordu, bir tane N gelmesi yeni satıra geçmek için yeterli,fazlalıkları sildim
+    for _ in range (new_row.count("N")):
         new_row.remove("N")
-    if new_row != []: #burada da her new_row u genel row_list adındaki listede topladım
+    if new_row != []:
         row_list.append(new_row)
-    #yani genelde inputu row_list adında içerisinde row listelerinin bulunduğu bir listede topladım
-    # her row da içinde komutların(ileride kullanacağım üzere elementlerin) listesi
 
-    #bu fonksiyon almış olduğu row da eğer DL varsa o row için dashed_line_count ı 1 yapıyor ardıından da o satırdaki bütün DL elementlerini siliyor
-    #en son çalıştırdığım for döngüsünde bir row geldiğinde ilk önce bunu çalıştırdım ki row çizilmeye başlamadan DL çizip çizmeyeceğimi bileyim
+
 def count_then_erase_dashed_line(row):
     for element in row:
         letter= str(element[0])
@@ -28,7 +24,7 @@ def count_then_erase_dashed_line(row):
             break
     return dashed_line_count
 
-#bu fonksiyon eleman alıp onların genişliğini veriyor
+
 def find_element_width(element):
     width=0
     letter = str(element[0])
@@ -50,15 +46,14 @@ def find_element_width(element):
         width=int(element[1: len(element)])
     return width
 
-#bu fonksiyon row alıp row içindeki her eleman için bir üstteki fonksiyonu çağırıyor sonra da row un toplan genişliğini hesaplıyor
 def find_row_width(row):
     total_width = len(row)-1
     if "DL" in row:
-        total_width-= row.count("DL")
+        total_width-=row.count("DL")
     for element in row:
         total_width = find_element_width(element) + total_width
     return total_width
-#bu fonksiyon girdideki bütün row lardan en büyük genişliğe sahip olanın genişliğini hesapluyor ki DL komutlarını bu uzunluğa göre çizeyim
+
 def find_max_width():
     max_width = 0
     for row in row_list:
@@ -66,7 +61,7 @@ def find_max_width():
         if width>max_width:
             max_width=width
     return max_width
-#bu fonksiyon eleman alıp onların yüklsekliğini veriyor
+
 def find_element_height(element):
     letter=str(element[0])
     if letter == "T":
@@ -86,7 +81,7 @@ def find_element_height(element):
     elif letter == "O":
         height=0
     return height
-#bu fonksiyon row içerisindeki en yüksek elemanı bulup onun yüksekliğini döndürüyor(şekilleri aşağı yukarı hizzalamak için gerekli)
+
 def find_max_height(row):
     max_height = 0
     for element in row:
@@ -94,7 +89,7 @@ def find_max_height(row):
             max_height=find_element_height(element)
     return max_height
 
-#bundan sonraki 8 fonksiyon her bir şeklin tek tek satırlarını yazdırıyor
+
 def draw_dashed_line():
     print("-"*max_width)
 
@@ -103,7 +98,7 @@ def draw_blank_line():
 
 def draw_square_line(element,line):
     size=find_element_width(element)
-    offset=max_height-size #bu offset komutu şekli max_height a göre row içinde aşağıya dayamak için
+    offset=max_height-size
     if line<offset:
         print(" "*size,end="")
     else:
@@ -144,9 +139,8 @@ def draw_offset(element,line):
     print(" "*width,end="")
 
 
-#programı asıl çalıştıran kısım burası
 
-for row in row_list: #her rowda sırayla geziniyor
+for row in row_list:
     dashed_line_count=count_then_erase_dashed_line(row)
     max_width=find_max_width()
     max_height=find_max_height(row)
@@ -154,8 +148,9 @@ for row in row_list: #her rowda sırayla geziniyor
     row_offset=int((max_width-row_width)/2)
     if dashed_line_count >= 1:
         draw_dashed_line()
-    if row_width==0: #Blank line geldiğince row_width 0 olarak dönüyor o yüzden print() ile blank line bıraktırdım
+    if row_width==0: #Blank line geldiğince row_width -1 olarak dönüyor
         draw_blank_line()
+        continue
     for line in range(max_height):
         print(" " * row_offset, end="")
         for element in row:
